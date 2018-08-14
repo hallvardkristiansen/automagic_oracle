@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css?family=Oxygen');
+
+html,
+body, main {
+    margin: 0;
+    padding: 0;
+    font-family: 'Oxygen', sans-serif;
+}
+
+ul > li {
+    display: inline-block;
+}
+
+ul > li > a {
+    text-decoration: none;
+    color: red;
+    padding-left: 100px;
+    padding-right: 100px;
+    top: 22px;
+    position: relative
+}
+
+ul > li > a:hover {
+    color: mediumpurple;
+    opacity: .6;
+}
+
+header {
+  text-align: center;
+}
+
+main {
+    background: white;
+}
+
+.cnn {
+  position: relative;
+  color: black;
+  width: 80%;
+  height: 80%;
+  left: 10%;
+  top: 20%;
+}
+.controls, .statuses {
+  padding: 40px 20px;
+  width: 50%;
+  box-sizing: border-box;
+  display: block;
+  float: left;
+  clear: none;
+}
+
+.processing {
+  -webkit-animation: vibrate-1 0.4s linear infinite both;
+  animation: vibrate-1 0.4s linear infinite both;
+}
+@-webkit-keyframes vibrate-1 {
+  0% {
+    -webkit-transform: translate(0);
+    transform: translate(0);
+  }
+  20% {
+    -webkit-transform: translate(-2px, 2px);
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    -webkit-transform: translate(-2px, -2px);
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    -webkit-transform: translate(2px, 2px);
+    transform: translate(2px, 2px);
+  }
+  80% {
+    -webkit-transform: translate(2px, -2px);
+    transform: translate(2px, -2px);
+  }
+  100% {
+    -webkit-transform: translate(0);
+    transform: translate(0);
+  }
+}
+@keyframes vibrate-1 {
+  0% {
+    -webkit-transform: translate(0);
+    transform: translate(0);
+  }
+  20% {
+    -webkit-transform: translate(-2px, 2px);
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    -webkit-transform: translate(-2px, -2px);
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    -webkit-transform: translate(2px, 2px);
+    transform: translate(2px, 2px);
+  }
+  80% {
+    -webkit-transform: translate(2px, -2px);
+    transform: translate(2px, -2px);
+  }
+  100% {
+    -webkit-transform: translate(0);
+    transform: translate(0);
+  }
+}
+
+
+.aGraph {
+  box-sizing: border-box;
+  display: block;
+  clear: none;
+  float: left;
+  margin-bottom: 200px;
+}
+
+svg.line-graph text {
+	cursor: default;
+}
+
+svg.line-graph .hover-line {
+	stroke: #6E7B8B;
+}
+
+svg.line-graph .hide {
+	opacity: 0;
+}
+				
+svg.line-graph .axis {
+  shape-rendering: crispEdges;
+}
+
+svg.line-graph .x.axis line {
+  stroke: #D3D3D3;
+}
+
+svg.line-graph .x.axis .minor {
+  stroke-opacity: .5;
+}
+
+svg.line-graph .x.axis path {
+  display: none;
+}
+			
+svg.line-graph .x.axis text {
+	font-size: 10px;
+}
+
+svg.line-graph .y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
+			
+svg.line-graph .y.axis text {
+	font-size: 12px;
+}
+
+svg.line-graph .scale-button:not(.selected):hover {
+	text-decoration: underline;
+	cursor: pointer !important;
+}
+
+svg.line-graph .date-label {
+	fill: #6E7B8B;
+}
