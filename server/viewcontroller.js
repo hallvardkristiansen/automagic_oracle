@@ -9,7 +9,6 @@ const express = require('express'),
 
 view
   .get('/', (req, res) => res.render('chart.ejs'))
-  .get('/automagic_oracle/', (req, res) => res.render('chart.ejs'))
 
 console.log(`View controller initialized!`)
 
