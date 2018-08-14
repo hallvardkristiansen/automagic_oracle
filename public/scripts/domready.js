@@ -75,7 +75,7 @@ $(function() {
             };
             l1 = new LineGraph({containerId: 'graph1', data: graphdata});
             
-            const conclusion = predictions[predictions.length - 1] > prediction_initial_value ? 'BUY' : 'SELL';
+            const conclusion = lastprediction[3] > prediction_initial_value ? 'BUY' : 'SELL';
             $('#conclusion').html('The Oracle says: ' + conclusion);
           })
         })
