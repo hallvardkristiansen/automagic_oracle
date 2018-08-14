@@ -20,7 +20,7 @@ $(function() {
     $('#current_activity').html('Fetching data...').addClass('processing');
     $('#share_symbol').html('Share symbol: ' + symbol);
 
-    fetchWrapper('http://localhost:5555/api/' + symbol).then(function (data) {
+    fetchWrapper(window.location.href + '/api/' + symbol).then(function (data) {
       $('#current_activity').html('Preparing data...');
       $('#dataset_length').html('Received ' + data.length + ' data points');
       $('#dataset_start').html('Data begins at ' + moment(data[0]['date']).format('DD/MM - YYYY'));
