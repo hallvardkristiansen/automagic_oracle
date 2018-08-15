@@ -4,6 +4,7 @@ var testhighs;
 var testinput;
 var correctoutput;
 var groundtruth;
+var displayedinputs;
 var graphdata;
 var enddate;
 var predict_period = 30;
@@ -88,6 +89,7 @@ const prep = function (data) {
       });
       timeline = dates.slice(-predict_period);
       groundtruth = closes.slice(-predict_period);
+      displayedinputs = opens.slice(-predict_period);
       
       var maxa = d3.max(opens);
       var maxb = d3.max(closes);
@@ -104,6 +106,8 @@ const prep = function (data) {
         normalizedoutputs.push([scale(lows[index+1]), scale(highs[index+1]), scale(opens[index+1]), scale(closes[index+1]), volscale(volumes[index+1])]);
       });
       testinput = normalizedinputs.splice(-predict_period, predict_period);
+      var lastday = dates.length;
+      testinput.push([scale(lows[lastday]), scale(highs[lastday]), scale(opens[lastday]), scale(closes[lastday]), volscale(volumes[lastday])]);
       normalizedoutputs.splice(-predict_period, predict_period);
     } catch (ex) {
       resolve(ex)

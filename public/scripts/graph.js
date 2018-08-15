@@ -296,6 +296,7 @@ function LineGraph(argsMap) {
 		}
 		
 		var maxValues = [];
+		var minValues = [];
 		var rounding = getOptionalVar(dataMap, 'rounding', []);
 		// default rounding values
 		if(rounding.length == 0) {
@@ -310,6 +311,7 @@ function LineGraph(argsMap) {
 		dataValues.forEach(function (v, i) {
 			newDataValues[i] = v.slice(0);
 			maxValues[i] = d3.max(newDataValues[i])
+			minValues[i] = d3.min(newDataValues[i])
 		})
 
 		
@@ -327,6 +329,7 @@ function LineGraph(argsMap) {
 			"scale" : getOptionalVar(dataMap, 'scale', yScale),
 			"minval" : getOptionalVar(dataMap, 'minval'),
 			"maxval" : getOptionalVar(dataMap, 'maxval'),
+			"minValues" : minValues,
 			"maxValues" : maxValues,
 			"rounding" : rounding,
 			"numAxisLabelsLinearScale": numAxisLabelsLinearScale,
@@ -410,18 +413,19 @@ function LineGraph(argsMap) {
 	}
 	
 	var initYleft = function() {
-		var maxYscaleLeft = calculateMaxY(data, 'left')
+		var maxYscaleLeft = calculateMaxY(data, 'left');
+		var minYscaleLeft = calculateMinY(data, 'left');
 		//debug("initY => maxYscale: " + maxYscaleLeft);
 		var numAxisLabels = 6;
 		if(yScale == 'pow') {
-			yLeft = d3.scale.pow().exponent(0.3).domain([0, maxYscaleLeft]).range([h, 0]).nice();	
+			yLeft = d3.scale.pow().exponent(0.3).domain([minYscaleLeft, maxYscaleLeft]).range([h, 0]).nice();	
 			numAxisLabels = data.numAxisLabelsPowerScale;
 		} else if(yScale == 'log') {
 			// we can't have 0 so will represent 0 with a very small number
 			// 0.1 works to represent 0, 0.01 breaks the tickFormatter
-			yLeft = d3.scale.log().domain([0.1, maxYscaleLeft]).range([h, 0]).nice();	
+			yLeft = d3.scale.log().domain([minYscaleLeft, maxYscaleLeft]).range([h, 0]).nice();	
 		} else if(yScale == 'linear') {
-			yLeft = d3.scale.linear().domain([data.minval, data.maxval]).range([h, 0]).nice();
+			yLeft = d3.scale.linear().domain([minYscaleLeft, maxYscaleLeft]).range([h, 0]).nice();
 			numAxisLabels = data.numAxisLabelsLinearScale;
 		}
 
@@ -429,20 +433,21 @@ function LineGraph(argsMap) {
 	}
 	
 	var initYright = function() {
-		var maxYscaleRight = calculateMaxY(data, 'right')
+		var maxYscaleRight = calculateMaxY(data, 'right');
+		var minYscaleRight = calculateMinY(data, 'right');
 		// only create the right axis if it has values
 		if(maxYscaleRight != undefined) {
 			//debug("initY => maxYscale: " + maxYscaleRight);
 			var numAxisLabels = 6;
 			if(yScale == 'pow') {
-				yRight = d3.scale.pow().exponent(0.3).domain([0, maxYscaleRight]).range([h, 0]).nice();		
+				yRight = d3.scale.pow().exponent(0.3).domain([minYscaleRight, maxYscaleRight]).range([h, 0]).nice();		
 				numAxisLabels = data.numAxisLabelsPowerScale;
 			} else if(yScale == 'log') {
 				// we can't have 0 so will represent 0 with a very small number
 				// 0.1 works to represent 0, 0.01 breaks the tickFormatter
-				yRight = d3.scale.log().domain([0.1, maxYscaleRight]).range([h, 0]).nice();	
+				yRight = d3.scale.log().domain([minYscaleRight, maxYscaleRight]).range([h, 0]).nice();	
 			} else if(yScale == 'linear') {
-				yRight = d3.scale.linear().domain([0, maxYscaleRight]).range([h, 0]).nice();
+				yRight = d3.scale.linear().domain([minYscaleRight, maxYscaleRight]).range([h, 0]).nice();
 				numAxisLabels = data.numAxisLabelsLinearScale;
 			}
 			
@@ -470,6 +475,15 @@ function LineGraph(argsMap) {
 		
 		// we now have the max values for the axis we're interested in so get the max of them
 		return d3.max(maxValuesForAxis);
+	}
+	var calculateMinY = function(data, whichAxis) {
+		var minValuesForAxis = [];
+		data.minValues.forEach(function(v, i) {
+			if(data.axis[i] == whichAxis) {
+				minValuesForAxis.push(v);
+			}
+		})
+		return d3.min(minValuesForAxis);
 	}
 	
 	/*
@@ -1002,7 +1016,7 @@ function LineGraph(argsMap) {
 		index = Math.round(index);
 
 		// bucketDate is the date rounded to the correct 'step' instead of interpolated
-		var bucketDate = new Date(data.startTime.getTime() + data.step * (index+1)); // index+1 as it is 0 based but we need 1-based for this math
+		var bucketDate = new Date(data.startTime.getTime() + data.step * (index)); // index+1 as it is 0 based but we need 1-based for this math
 				
 		var v = d[index];
 
