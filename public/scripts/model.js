@@ -14,7 +14,7 @@ var volscale;
 var batch_size = 10;
 var epochs = 1000;    
 var symbol = 'aapl';
-var prediction_fraction = 0.5;
+var aggr_error = 0;
 
 const init = {
   method: 'GET',
@@ -131,7 +131,6 @@ const modelHelper = function(model) {
 
 var model;
 const buildCnn = function (data) {
-  console.log(data);
   return new Promise(function (resolve, reject) {
     model = tf.sequential()
     model.add(tf.layers.dense({
