@@ -105,10 +105,9 @@ const prep = function (data) {
         normalizedinputs.push([scale(lows[index]), scale(highs[index]), scale(opens[index]), scale(closes[index]), volscale(volumes[index])]);
         normalizedoutputs.push([scale(lows[index+1]), scale(highs[index+1]), scale(opens[index+1]), scale(closes[index+1]), volscale(volumes[index+1])]);
       });
-      testinput = normalizedinputs.splice(-predict_period, predict_period);
+      testinput = normalizedinputs.slice(-predict_period);
       var lastday = dates.length;
       testinput.push([scale(lows[lastday]), scale(highs[lastday]), scale(opens[lastday]), scale(closes[lastday]), volscale(volumes[lastday])]);
-      normalizedoutputs.splice(-predict_period, predict_period);
     } catch (ex) {
       resolve(ex)
       console.log(ex)

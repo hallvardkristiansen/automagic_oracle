@@ -30,10 +30,10 @@ $(function() {
         $('#current_activity').html('Constructing network...');
         buildCnn(result).then(function (built) {
           $('#current_activity').html('Training network for ' + epochs + ' epochs');
-          var last_prediction;
           cnn(built.model, built.data, epochs).then(function (e) {
             var predictions = Array();
             var lastprediction;
+            console.log(testinput);
             $.each(testinput, function(index, el) {
               if (index > 0) {
                 var inputval = tf.tensor2d(el, [1, 5]);
@@ -43,7 +43,7 @@ $(function() {
                   const values = prediction.dataSync();
                   const arr = Array.from(values);
                   predictions.push(scale.invert(arr[3]));
-                  last_prediction = arr;
+                  lastprediction = arr;
                   aggr_error += el[3] - arr[3];
                 });
               }
@@ -54,7 +54,7 @@ $(function() {
             
             var conclusion;
             tf.tidy(() => {
-              var inputval = tf.tensor2d(last_prediction, [1, 5]);
+              var inputval = tf.tensor2d(lastprediction, [1, 5]);
               inputval = inputval.reshape([1, 1, 5]);
               const prediction = model.predict(inputval);
               const values = prediction.dataSync();
